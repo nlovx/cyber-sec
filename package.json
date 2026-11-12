@@ -1,0 +1,12 @@
+{
+  "name": "cyber-sec",
+  "version": "0.3.0",
+  "private": true,
+  "description": "CYBER SEC — локальная интерактивная учебная платформа (компьютеры, ОС, сети, код, безопасность).",
+  "scripts": {
+    "test": "node --test tests/logic.test.mjs tests/mastery.test.mjs tests/content.test.mjs",
+    "serve": "node tools/serve.mjs",
+    "start": "node tools/server.mjs"
+  },
+  "type": "commonjs"
+}
