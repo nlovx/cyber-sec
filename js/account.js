@@ -72,7 +72,7 @@
   }
 
   function init() {
-    if (!/^https?:$/.test(location.protocol)) { ready = Promise.resolve(); return ready; }
+    if (!/^https?:$/.test(location.protocol) || /github\.io$/.test(location.hostname)) { ready = Promise.resolve(); return ready; } // на статическом хостинге (GitHub Pages) сервера нет — прогресс хранится в браузере
     ready = api('GET', '/api/ping').then(function (p) {
       A.available = true; A.invite = !!p.invite;
       return api('GET', '/api/me');
