@@ -226,6 +226,12 @@
     var t0 = new Date(); t0.setHours(0, 0, 0, 0);
     var today = (CS.state.history || []).filter(function (e) { return e.t >= t0.getTime() && (e.type === 'lesson' || e.type === 'lab'); }).length;
     var streak = (CS.state.streak && CS.state.streak.count) || 0;
+    if (/github\.io$/.test(location.hostname)) {
+      var warn = h('div', 'save-warn');
+      warn.appendChild(h('b', null, 'Прогресс хранится только в этом браузере.'));
+      warn.appendChild(h('span', null, 'Войти в аккаунт на этой версии нельзя. Чтобы не потерять прогресс (смена браузера, очистка истории, другое устройство), открой меню «⋯» → «Код переноса» и сохрани код.'));
+      d.appendChild(warn);
+    }
     var goal = h('div', 'path-goal' + (today ? ' ok' : ''));
     goal.appendChild(h('b', null, today ? '✓ Цель на сегодня выполнена' : 'Цель на сегодня: 1 урок'));
     goal.appendChild(h('span', null, today ? (streak > 1 ? 'Серия: ' + streak + ' дн. подряд — так держать.' : 'Серия началась. Вернись завтра, чтобы она росла.') : (streak > 0 ? 'Не прерви серию в ' + streak + ' дн.: хватит одного урока на 15–20 минут.' : 'Пройди один урок — и начнётся твоя серия.')));

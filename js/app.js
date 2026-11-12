@@ -8,6 +8,7 @@
     // Гарантированно дописываем прогресс при уходе со страницы (на случай троттлинга записи).
     window.addEventListener('beforeunload', function () { try { CS.saveNow(); } catch (e) {} });
     window.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') { try { CS.saveNow(); } catch (e) {} } });
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {} // просим браузер не стирать прогресс при нехватке места
     CSUI.route();
     if (window.CSAcc) CSAcc.init().then(function () { if ((CSAcc.state.nick || CSAcc.state.available) && !/^#\/(lesson|review|diagnostic)/.test(location.hash)) CSUI.route(); });
   }

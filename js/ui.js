@@ -177,6 +177,25 @@
     btns.appendChild(exp); btns.appendChild(imp);
     card.appendChild(btns);
 
+    // Код переноса: короткий способ сохранить прогресс и открыть его на другом устройстве или после очистки браузера.
+    var codeBox = h('div', 'code-box');
+    codeBox.appendChild(h('div', 'sheet-h', 'Код переноса прогресса'));
+    codeBox.appendChild(h('p', 'muted', 'Скопируй код и сохрани его (например, в «Избранное» Telegram). Если прогресс пропал или ты зашёл с другого устройства — вставь код сюда.'));
+    var codeArea = h('textarea', 'code-area'); codeArea.rows = 3; codeArea.placeholder = 'Сюда вставь код и нажми «Загрузить»';
+    var codeRow = h('div', 'frow');
+    var cpy = h('button', 'btn', 'Скопировать мой код');
+    cpy.onclick = function () {
+      var code = 'CSP1.' + btoa(unescape(encodeURIComponent(CS.exportProfile())));
+      codeArea.value = code; codeArea.select();
+      try { navigator.clipboard.writeText(code); cpy.textContent = 'Скопировано ✓'; setTimeout(function () { cpy.textContent = 'Скопировать мой код'; }, 1500); } catch (e) { cpy.textContent = 'Выдели и скопируй вручную'; }
+    };
+    var ld = h('button', 'btn primary', 'Загрузить код');
+    ld.onclick = function () {
+      var v = codeArea.value.trim(); if (v.indexOf('CSP1.') !== 0) { alert('Это не код прогресса. Он начинается с CSP1.'); return; }
+      try { var json = decodeURIComponent(escape(atob(v.slice(5)))); if (CS.importProfile(json)) { close(ov); renderChrome(); route(); } else alert('Не удалось прочитать код.'); } catch (e) { alert('Код повреждён: скопируй его целиком.'); }
+    };
+    codeRow.appendChild(cpy); codeRow.appendChild(ld); codeBox.appendChild(codeArea); codeBox.appendChild(codeRow); card.appendChild(codeBox);
+
     var reset = h('button', 'btn danger', 'Сбросить прогресс');
     reset.onclick = function () { if (confirm('Точно сбросить весь прогресс? Это необратимо.')) { CS.resetProfile(); close(ov); renderChrome(); route(); } };
     card.appendChild(reset);
